@@ -29,7 +29,7 @@ const Form = () => {
 			console.log('Некорректный емеил');
 		} else {
 			setEmailError('');
-			console.log('корректный емеил');
+			console.log('корректный емейл');
 		}
 
 		if (!e.target.value) {
