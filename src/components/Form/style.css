@@ -21,11 +21,11 @@ form {
 	transition: background-color 0.3s ease;
 }
 .form__body input:hover {
-	background-color: rgb(240, 240, 240);
+	background-color: rgb(226, 225, 225);
 }
 
 .form__body input:focus {
-	background-color: rgb(218, 218, 218);
+	background-color: rgb(197, 197, 197);
 }
 .form__body :not(:last-child) {
 	margin: 0 0 30px 0;
@@ -45,29 +45,26 @@ form {
 	border: none;
 	letter-spacing: 1px;
 
-	transition: all 0.8s ease;
+	transition: all .5s ease;
 }
 
 .form__btn:not([disabled]):hover{
-	background-color: rgb(151, 151, 151);
-	color: whitesmoke;
+	background-color: rgb(207, 207, 207);
 	cursor: pointer;
 }
 
-.form__btn:active {
-	background-color: rgb(121, 121, 121);
+.form__btn:not([disabled]):active {
+	background-color: rgb(168, 168, 168);
 }
 
 .label {
 	font-size: 0.8rem;
-	color: rgb(105, 0, 0);
+	color: rgb(0, 53, 53);
 	position: absolute;
 	left: 30px;
 	font-weight: bold;
 }
 
-.label.email__label {
-}
 .email__label {
 	top: 25%;
 }
