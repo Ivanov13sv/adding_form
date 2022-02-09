@@ -26,7 +26,7 @@ const Form = () => {
 
 		if (!re.test(String(e.target.value).toLowerCase())) {
 			setEmailError('Wrong email');
-			console.log('Некорректный емеил');
+			console.log('Wrong email');
 		} else {
 			setEmailError('');
 			console.log('корректный емейл');
