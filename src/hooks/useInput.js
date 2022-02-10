@@ -14,5 +14,9 @@ export const useInput = (initialValue, validations) => {
 		setIsDirty(true);
 	};
 
-	return { value, onChange, onBlur, isDirty, ...valid };
+	return {
+		inputValues: { value, onChange, onBlur },
+		isDirty,
+		...valid,
+	};
 };

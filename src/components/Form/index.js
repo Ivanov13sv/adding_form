@@ -9,6 +9,7 @@ const Form = () => {
 
 	const validForm = email.inputValid && password.inputValid;
 
+	console.log(email)
 	return (
 		<div className='form'>
 			<form className='form__body'>
@@ -22,9 +23,7 @@ const Form = () => {
 					<p className='label email__label'>wrong email</p>
 				)}
 				<input
-					value={email.value}
-					onChange={email.onChange}
-					onBlur={email.onBlur}
+					{...email.inputValues}
 					className='form__email'
 					name='email'
 					placeholder='Enter your email...'
@@ -35,9 +34,7 @@ const Form = () => {
 					</p>
 				)}
 				<input
-					value={password.value}
-					onChange={password.onChange}
-					onBlur={password.onBlur}
+					{...password.inputValues}
 					className='form__password'
 					name='password'
 					type='password'
