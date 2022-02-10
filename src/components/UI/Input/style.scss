@@ -1,0 +1,27 @@
+.input {
+	padding: 10px 15px;
+	background: rgba(165, 212, 238, 0.233);
+	backdrop-filter: blur(15px);
+	/* Note: backdrop-filter has minimal browser support */
+	border: none;
+	border-radius: 10px;
+	outline: none;
+    width: 100%;
+	color: rgba(255, 255, 255, 0.8);
+	transition: background-color 0.2s ease;
+	&::placeholder {
+		font-size: 1rem;
+		letter-spacing: 0.02em;
+		color: rgba(255, 255, 255, 0.8);
+		font-family: Montserrat;
+		font-weight: 500;
+		line-height: 120%;
+	}
+
+	&:hover {
+		background: rgba(165, 212, 238, 0.199);
+	}
+	&:focus {
+		background: rgba(165, 212, 238, 0.301);
+	}
+}

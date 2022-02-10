@@ -1,9 +1,11 @@
-
-
+import './App.scss';
+import Form from './components/Form';
+import Title from './components/Title';
 function App() {
 	return (
 		<div className='App'>
-123
+			<Title />
+			<Form />
 		</div>
 	);
 }

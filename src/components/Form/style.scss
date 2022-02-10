@@ -1,0 +1,20 @@
+.personal_info {
+	& >:not(:last-child) {
+		margin: 0 0 0.7rem 0;
+	}
+    & >:last-child{
+        margin: 0 0 1.6rem 0;
+    }
+}
+
+.inputs_row {
+	display: flex;
+
+	& > *:not(:last-child) {
+		margin: 0 0.5rem 0 0;
+		flex: 1 0 67%;
+	}
+	&:last-child {
+		margin: 1rem 0 0 0;
+	}
+}
