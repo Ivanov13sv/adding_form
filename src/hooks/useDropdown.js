@@ -7,11 +7,11 @@ export const useDropdown = (initialSelect, options) =>{
     const selectHandler = (e) => {
 		setSelected(e.target.innerText);
         setOpen(!isOpen);
-        if (e.charCode === 13) setOpen(!isOpen);
+        if (e.charCode === 13 || e.charCode === 32) setOpen(!isOpen);
 	};
 
 	const keyHandler = (e) => {
-		if (e.charCode === 13) {
+		if (e.charCode === 13 || e.charCode === 32) {
 			setOpen(!isOpen);
 		}
 	};

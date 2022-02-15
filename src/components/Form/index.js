@@ -7,33 +7,32 @@ import { Checkbox } from '../UI/Checkbox';
 import { Button } from '../UI/Button';
 import './style.scss';
 import { useDropdown } from '../../hooks/useDropdown';
-import Dropdowntest from '../UI/Dropdown_copy';
 
 const Form = () => {
-	const [selectedPatient, setSelectedPatient] = useState('*Группа клиентов');
-	const [selectedDoctor, setSelectedDoctor] = useState('*Лечащий врач');
-	const [selectedDocument, setSelectedDocument] = useState('*Тип документа');
-	const clientsOptions = ['VIP', 'ОМС', 'Проблемные'];
-	const doctorsOptions = ['Иванов А. А.', 'Захаров С.В.', 'Чернышева Ю.Н.'];
-	const documentsOptions = [
-		'Паспорт',
-		'Свидетельство о рождении',
-		'Водительское удостоверение',
-	];
-	const [isChecked, setIsChecked] = useState(false);
-	const patients = useDropdown('*Группа кавота', [
-		'Vjip',
-		'ОvvvМС',
-		'Прмные',
-	]);
-	const doctors = useDropdown('*Врачи', ['Ivanov', 'petrov', 'jopaasdd'])
+	const [sendMessage, setSendMessage] = useState(false);
 
-	const surname = useInput('', { isEmpty: true });
-	const name = useInput('', { isEmpty: true, maxLength: 10 });
-
-	const showForm = (e) => {
-		e.preventDefault();
+	const formFields = {
+		surname: useInput('', { isEmpty: true }),
+		test: useInput('', {isDate: true}),
+		name: useInput('', { isEmpty: true, maxLength: 10 }),
+		patronymic: useInput(''),
+		patients: useDropdown('*Группа клиентов', ['VIP', 'ОМС', 'Проблемные']),
+		doctors: useDropdown('*Лечащий врач', [
+			'Иванов А. А.',
+			'Захаров С.В.',
+			'Чернышева Ю.Н.',
+		]),
+		documents: useDropdown('*Тип документа', [
+			'Паспорт',
+			'Свидетельство о рождении',
+			'Водительское удостоверение',
+		]),
 	};
+	
+
+	const { surname, name, test, patients, doctors, documents, patronymic } = formFields;
+
+	console.log(test)
 
 	return (
 		<form className='form'>
@@ -46,7 +45,7 @@ const Form = () => {
 						placeholder={'*Фамилия'}
 					/>
 					{surname.isDirty && surname.isEmpty && (
-						<div>{name.errorMessage}</div>
+						<div>{surname.errorMessage}</div>
 					)}
 					<Input
 						value={name.value}
@@ -60,28 +59,18 @@ const Form = () => {
 					{name.isDirty && name.maxLengthError && (
 						<div>{name.errorMessage}</div>
 					)}
-					<Input placeholder={'Отчество'} />
+					<Input value={patronymic.value} onChange={patronymic.onChange} placeholder={'Отчество'} />
 					<div className='inputs_row'>
-						<Input type='text' placeholder={'*Дата рождения'} />
+						<Input placeholder={'*Дата рождения'} />
 						<Input placeholder={'*Пол'} />
 					</div>
-					<Input type='number' placeholder={'*Номер телефона'} />
-					<Dropdown
-						selected={selectedPatient}
-						setSelected={setSelectedPatient}
-						options={clientsOptions}
-					/>
-					<Dropdown
-						selected={selectedDoctor}
-						setSelected={setSelectedDoctor}
-						options={doctorsOptions}
-					/>
-					{/* test below */}
-					<Dropdowntest fields={patients} />
+					<Input type='tel' placeholder={'*Номер телефона'} />
+					<Dropdown fields={patients} />
+					<Dropdown fields={doctors} />
 				</div>
 				<Checkbox
-					isChecked={isChecked}
-					setIsChecked={setIsChecked}
+					isChecked={sendMessage}
+					setIsChecked={setSendMessage}
 					placeholder='Не отправлять СМС'
 				/>
 				<div className='block block__adress'>
@@ -97,22 +86,24 @@ const Form = () => {
 				</div>
 				<div className='block block__documents'>
 					<p className='block__title'>Данные:</p>
-					<Dropdown
-						options={documentsOptions}
-						setSelected={setSelectedDocument}
-						selected={selectedDocument}
-					/>
+					<Dropdown fields={documents} />
 					<div className='inputs_row'>
-						<Input placeholder='Серия' />
-						<Input placeholder='Номер' />
+						<Input type='tel' placeholder='Серия' />
+						<Input type='tel' placeholder='Номер' />
 					</div>
 
 					<Input placeholder='Кем выдан' />
 					<Input placeholder='*Дата выдачи' />
 				</div>
-				<Button onClick={showForm}>Создать клиента</Button>
+				<Button>Создать клиента</Button>
+				<Input
+					placeholder='test data'
+					type='tel'
+					value={test.value}
+					onChange={test.onChange}
 
-				<Dropdowntest fields={doctors} />
+				/>
+				{(test.isDirty && test.isEmpty) && <div>{test.errorMessage}</div>}
 			</Container>
 		</form>
 	);

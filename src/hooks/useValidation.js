@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 
 export const useValidation = (value, validations) => {
-	const [errorMessage, setErrorMessage] = useState('');
 
+
+	const [errorMessage, setErrorMessage] = useState('');
 	const [isEmpty, setEmpty] = useState(true);
 	const [minLengthError, setMinLengthError] = useState(true);
 	const [maxLengthError, setMaxLengthError] = useState(true);
+	const [isNumber, setNumber] = useState(false);
+	const [isDate, setDate] = useState(false);
 
 	useEffect(() => {
 		for (let validation in validations) {
@@ -41,11 +44,27 @@ export const useValidation = (value, validations) => {
 						setMaxLengthError(false);
 					}
 					break;
+
+				case 'isNumber':
+					setNumber(true);
+					break;
+
+				case 'isDate':
+					setDate(true);
+					break;
+
 				default:
 					return;
 			}
 		}
 	}, [value]);
 
-	return { isEmpty, minLengthError, errorMessage,maxLengthError };
+	return {
+		isEmpty,
+		minLengthError,
+		errorMessage,
+		maxLengthError,
+		isNumber,
+		isDate,
+	};
 };
