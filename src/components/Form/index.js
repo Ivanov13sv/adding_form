@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from '../UI/Input';
 import Container from '../Container/Container';
 import Dropdown from '../UI/Dropdown';
@@ -9,101 +9,204 @@ import './style.scss';
 import { useDropdown } from '../../hooks/useDropdown';
 
 const Form = () => {
-	const [sendMessage, setSendMessage] = useState(false);
+	const [formValid, setFormValid] = useState(false);
 
 	const formFields = {
 		surname: useInput('', { isEmpty: true }),
-		test: useInput('', {isDate: true}),
-		name: useInput('', { isEmpty: true, maxLength: 10 }),
+		name: useInput('', { isEmpty: true }),
 		patronymic: useInput(''),
-		patients: useDropdown('*Группа клиентов', ['VIP', 'ОМС', 'Проблемные']),
-		doctors: useDropdown('*Лечащий врач', [
-			'Иванов А. А.',
-			'Захаров С.В.',
-			'Чернышева Ю.Н.',
-		]),
-		documents: useDropdown('*Тип документа', [
+		birthDate: useInput('', { isEmpty: true, isDate: true }),
+		gender: useInput('', { isEmpty: true }),
+		phone: useInput('', { isPhone: true }),
+		patients: useDropdown('*пациенты', ['VIP', 'ОМС', 'Проблемные'], {
+			isEmpty: true,
+		}),
+		doctors: useDropdown(
+			'*Лечащий врач',
+			['Иванов А. А.', 'Захаров С.В.', 'Чернышева Ю.Н.'],
+			{
+				isEmpty: true,
+			}
+		),
+		sendMessage: useState(false),
+		country: useInput(''),
+		region: useInput(''),
+		city: useInput('', { isEmpty: true }),
+		street: useInput(''),
+		house: useInput(''),
+		index: useInput('', { isNumber: true }),
+		documentType: useDropdown('*Тип документа', [
 			'Паспорт',
 			'Свидетельство о рождении',
 			'Водительское удостоверение',
 		]),
+
+		documentSeries: useInput(''),
+		documentNumber: useInput(''),
+		issued: useInput(''),
+		dateOfIssue: useInput('', { isEmpty: true, isDate: true }),
 	};
-	
 
-	const { surname, name, test, patients, doctors, documents, patronymic } = formFields;
+	const {
+		surname,
+		name,
+		patients,
+		doctors,
+		documentType,
+		patronymic,
+		birthDate,
+		gender,
+		phone,
+		sendMessage,
+		country,
+		region,
+		city,
+		street,
+		house,
+		index,
+		documentSeries,
+		documentNumber,
+		issued,
+		dateOfIssue,
+	} = formFields;
 
-	console.log(test)
+	//
+
+	// useMemo(() =>{
+
+	// },[formFields])
+
+	useEffect(() => {
+		if (
+			surname.isEmpty ||
+			name.isEmpty ||
+			birthDate.isEmpty ||
+			gender.isEmpty ||
+			phone.isEmpty ||
+			patients.isEmpty ||
+			doctors.isEmpty ||
+			city.isEmpty ||
+			documentType.isEmpty ||
+			dateOfIssue.isEmpty
+		) {
+			setFormValid(false);
+		} else {
+			setFormValid(true);
+		}
+
+		for (let key in formFields) {
+			if (formFields[key].isEmpty) {
+				setFormValid(false);
+			} else {
+				setFormValid(true);
+			}
+		}
+		// eslint-disable-next-line
+	}, [formFields]);
+
+	const getData = (e) => {
+		e.preventDefault();
+		let result = {};
+
+		for (let key in formFields) {
+			if (formFields[key].selected)
+				result[key] = formFields[key].selected;
+
+			if (key === 'sendMessage') {
+				result[key] = formFields[key][0];
+			}
+
+			if (formFields[key].inputControl)
+				result[key] = formFields[key].inputControl.value;
+		}
+		console.log(result);
+	};
 
 	return (
 		<form className='form'>
 			<Container>
 				<div className='personal_info'>
-					<Input
-						value={surname.value}
-						onChange={surname.onChange}
-						onBlur={surname.onBlur}
-						placeholder={'*Фамилия'}
-					/>
-					{surname.isDirty && surname.isEmpty && (
+					<Input {...surname.inputControl} placeholder={'*Фамилия'} />
+
+					{/* {surname.isDirty && surname.isEmpty && (
 						<div>{surname.errorMessage}</div>
+					)} */}
+
+					<Input {...name.inputControl} placeholder={'*Имя'} />
+					{name.isDirty && name.isEmpty && (
+						<div className='errorBlock'>{name.errorMessage}</div>
 					)}
 					<Input
-						value={name.value}
-						onChange={name.onChange}
-						onBlur={name.onBlur}
-						placeholder={'*Имя'}
+						{...patronymic.inputControl}
+						placeholder={'Отчество'}
 					/>
-					{name.isDirty && name.isEmpty && (
-						<div>{name.errorMessage}</div>
-					)}
-					{name.isDirty && name.maxLengthError && (
-						<div>{name.errorMessage}</div>
-					)}
-					<Input value={patronymic.value} onChange={patronymic.onChange} placeholder={'Отчество'} />
 					<div className='inputs_row'>
-						<Input placeholder={'*Дата рождения'} />
-						<Input placeholder={'*Пол'} />
+						<Input
+							{...birthDate.inputControl}
+							placeholder={'*Дата рождения'}
+						/>
+						{birthDate.isDirty && birthDate.isEmpty && (
+							<div>{birthDate.errorMessage}</div>
+						)}
+						<Input {...gender.inputControl} placeholder={'*Пол'} />
+						{gender.isDirty && gender.isEmpty && (
+							<div>{gender.errorMessage}</div>
+						)}
 					</div>
-					<Input type='tel' placeholder={'*Номер телефона'} />
+					<Input
+						{...phone.inputControl}
+						type='tel'
+						placeholder={'*Номер телефона'}
+					/>
+
 					<Dropdown fields={patients} />
+					{patients.isDirty && patients.isEmpty && (
+						<div>{patients.errorMessage}</div>
+					)}
 					<Dropdown fields={doctors} />
 				</div>
 				<Checkbox
-					isChecked={sendMessage}
-					setIsChecked={setSendMessage}
+					isChecked={sendMessage[0]}
+					setIsChecked={sendMessage[1]}
 					placeholder='Не отправлять СМС'
 				/>
 				<div className='block block__adress'>
 					<p className='block__title'>Адрес:</p>
-					<Input placeholder='Страна' />
-					<Input placeholder='Область' />
-					<Input placeholder='*Город' />
+					<Input {...country.inputControl} placeholder='Страна' />
+					<Input {...region.inputControl} placeholder='Область' />
+					<Input {...city.inputControl} placeholder='*Город' />
 					<div className='inputs_row'>
-						<Input placeholder='Улица' />
-						<Input placeholder='Дом' />
+						<Input {...street.inputControl} placeholder='Улица' />
+						<Input {...house.inputControl} placeholder='Дом' />
 					</div>
-					<Input placeholder='Индекс' />
+					<Input {...index.inputControl} placeholder='Индекс' />
 				</div>
 				<div className='block block__documents'>
 					<p className='block__title'>Данные:</p>
-					<Dropdown fields={documents} />
+					<Dropdown fields={documentType} />
 					<div className='inputs_row'>
-						<Input type='tel' placeholder='Серия' />
-						<Input type='tel' placeholder='Номер' />
+						<Input
+							{...documentSeries.inputControl}
+							type='tel'
+							placeholder='Серия'
+						/>
+						<Input
+							{...documentNumber.inputControl}
+							type='tel'
+							placeholder='Номер'
+						/>
 					</div>
 
-					<Input placeholder='Кем выдан' />
-					<Input placeholder='*Дата выдачи' />
+					<Input {...issued.inputControl} placeholder='Кем выдан' />
+					<Input
+						{...dateOfIssue.inputControl}
+						placeholder='*Дата выдачи'
+					/>
 				</div>
-				<Button>Создать клиента</Button>
-				<Input
-					placeholder='test data'
-					type='tel'
-					value={test.value}
-					onChange={test.onChange}
-
-				/>
-				{(test.isDirty && test.isEmpty) && <div>{test.errorMessage}</div>}
+				<div>{formValid}</div>
+				<Button onClick={getData} disabled={!formValid}>
+					Создать клиента
+				</Button>
 			</Container>
 		</form>
 	);

@@ -2,8 +2,14 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import './style.scss';
 
 const Dropdown = ({ fields }) => {
-	const { isOpen, keyHandler, options, selectHandler, selected, setOpen } =
-	fields;
+	const {
+		isOpen,
+		keyHandler,
+		options,
+		selectHandler,
+		selected,
+		placeholder,
+	} = fields;
 
 	const active = isOpen && 'active';
 
@@ -13,8 +19,13 @@ const Dropdown = ({ fields }) => {
 
 	return (
 		<div className='dropdown' tabIndex='0' onKeyPress={keyHandler}>
-			<div className='dropdown-btn' onClick={() => setOpen(!isOpen)}>
-				<span>{selected}</span>
+			<div className='dropdown-btn' onClick={selectHandler}>
+				{selected ? (
+					<span>{selected}</span>
+				) : (
+					<input disabled placeholder={placeholder} />
+				)}
+
 				<MdKeyboardArrowDown className={active} />
 			</div>
 			{isOpen && (

@@ -1,4 +1,9 @@
 .form {
+	.errorBlock{
+		position: absolute;
+		right: 1px;
+		
+	}
 	.personal_info {
 		& > :not(:last-child) {
 			margin: 0 0 0.7rem 0;

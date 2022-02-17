@@ -1,20 +1,42 @@
-import { useState } from "react"
+import { useState } from 'react';
+import { useValidation } from './useValidation';
 
-export const useDropdown = (initialSelect, options) =>{
-    const [selected, setSelected] = useState(initialSelect);
-    const [isOpen, setOpen] = useState(false);
+export const useDropdown = (placeholder, options, validations) => {
+	const [selected, setSelected] = useState('');
+	const [isOpen, setOpen] = useState(false);
+	const [isDirty, setDirty] = useState(false);
 
-    const selectHandler = (e) => {
+	const valid = useValidation(selected, validations);
+
+	const onBlur = () => {
+		setDirty(true);
+	};
+
+
+	const setOpenAndDirty = () => {
+		setOpen(!isOpen);
+		setDirty(true);
+	};
+
+	const selectHandler = (e) => {
 		setSelected(e.target.innerText);
-        setOpen(!isOpen);
-        if (e.charCode === 13 || e.charCode === 32) setOpen(!isOpen);
+		setOpenAndDirty();
 	};
 
 	const keyHandler = (e) => {
 		if (e.charCode === 13 || e.charCode === 32) {
-			setOpen(!isOpen);
+			setOpenAndDirty();
 		}
 	};
 
-    return {selected, selectHandler, options, isOpen, keyHandler, setOpen};
-}
+	return {
+		selected,
+		selectHandler,
+		options,
+		isOpen,
+		keyHandler,
+		placeholder,
+		isDirty,
+		...valid,
+	};
+};

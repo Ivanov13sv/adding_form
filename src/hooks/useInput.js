@@ -1,36 +1,75 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useValidation } from './useValidation';
 
 export const useInput = (initialValue, validations) => {
 	const [value, setValue] = useState(initialValue);
 	const [isDirty, setDirty] = useState(false);
 	const valid = useValidation(value, validations);
-	console.log(valid)
 
-	const removeLetters = value =>{
+	const removeLetters = (value) => {
 		return value.replace(/\D/gi, '');
-	}
+	};
 
-	const dateMask = value =>{
-		let inputValue = removeLetters(value);
-		const regex = /(\d{2})(\d{2})/;
-		const result = inputValue.replace(regex,'$1-$2').replace(regex, '$1-$2');;
-		return result.slice(0,10)
-	}
+	const dateMask = (value) => {
+		const inputValue = removeLetters(value);
+		let result = '';
+
+		if (inputValue.length) result += inputValue.slice(0,2);
+		if (inputValue.length > 2) result += '-' + inputValue.slice(2,4);
+		if (inputValue.length > 4) result += '-' + inputValue.slice(4,8);
+
+		return result;
+	};
+
+	const phoneMast = (number) => {
+		let cleanNumbers = removeLetters(number);
+
+		let result = '';
+
+		if (/[7-9]/.test(cleanNumbers)) {
+			// rus phone number
+			if (cleanNumbers[0] === '9') result = `7` + cleanNumbers;
+			let firstSymbol = cleanNumbers[0] === '8' ? '8' : '+7';
+			result = firstSymbol + ' ';
+
+			if (cleanNumbers.length > 1) {
+				result += '(' + cleanNumbers.slice(1, 4);
+			}
+			if (cleanNumbers.length >= 5) {
+				result += ') ' + cleanNumbers.slice(4, 7);
+			}
+			if (cleanNumbers.length >= 8) {
+				result += '-' + cleanNumbers.slice(7, 9);
+			}
+			if (cleanNumbers.length >= 10) {
+				result += '-' + cleanNumbers.slice(9, 11);
+			}
+		} else {
+			//not rus number
+			result = `+${cleanNumbers.slice(0, 16)}`;
+		}
+		return result;
+	};
 
 	const onChange = (e) => {
 		if (valid.isNumber) {
 			const inputValue = removeLetters(e.target.value);
 			setValue(inputValue);
 			return;
-		} 
-	
+		}
+
 		if (valid.isDate) {
-			const res = dateMask(e.target.value);
-			setValue(res)
+			const inputValue = dateMask(e.target.value);
+			setValue(inputValue);
 			return;
-		} 
-		setValue(e.target.value)
+		}
+		if (valid.isPhone) {
+			const inputValue = phoneMast(e.target.value);
+			setValue(inputValue);
+			return;
+		}
+
+		setValue(e.target.value);
 	};
 
 	const onBlur = (e) => {
@@ -38,9 +77,7 @@ export const useInput = (initialValue, validations) => {
 	};
 
 	return {
-		value,
-		onChange,
-		onBlur,
+		inputControl: { value, onChange, onBlur },
 		isDirty,
 		...valid,
 	};
