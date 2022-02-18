@@ -6,17 +6,32 @@ export const useValidation = (value, validations) => {
 	const [isNumber, setNumber] = useState(false);
 	const [isDate, setDate] = useState(false);
 	const [isPhone, setPhone] = useState(false);
+	const [minLengthError, setMinLengthError] = useState(false);
+
 
 
 	useEffect(() => {
 		for (let validation in validations) {
 			switch (validation) {
+
 				case 'isEmpty':
 					if (value.length) {
 						setEmpty(false);
+						setErrorMessage('')
 					} else {
 						setEmpty(true);
 						setErrorMessage('Обязательное поле');
+					}
+					break;
+
+				case 'minLength':
+					if (value.length < validations[validation]){
+						setMinLengthError(true);
+						setErrorMessage(`Поле не может быть меньше ${validations[validation]} символов`)
+					}
+					else{
+						setMinLengthError(false)
+						setErrorMessage(``)
 					}
 					break;
 
@@ -36,7 +51,10 @@ export const useValidation = (value, validations) => {
 					return;
 			}
 		}
+		// eslint-disable-next-line
 	}, [value]);
+
+
 
 
 
@@ -46,5 +64,6 @@ export const useValidation = (value, validations) => {
 		isNumber,
 		isDate,
 		isPhone,
+		minLengthError,
 	};
 };

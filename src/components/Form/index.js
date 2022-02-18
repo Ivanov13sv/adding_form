@@ -7,6 +7,7 @@ import { Checkbox } from '../UI/Checkbox';
 import { Button } from '../UI/Button';
 import './style.scss';
 import { useDropdown } from '../../hooks/useDropdown';
+import { ErrorMessage } from '../UI/ErrorMessage';
 
 const Form = () => {
 	const [formValid, setFormValid] = useState(false);
@@ -15,9 +16,9 @@ const Form = () => {
 		surname: useInput('', { isEmpty: true }),
 		name: useInput('', { isEmpty: true }),
 		patronymic: useInput(''),
-		birthDate: useInput('', { isEmpty: true, isDate: true }),
+		birthDate: useInput('', { isEmpty: true, isDate: true, minLength: 10 }),
 		gender: useInput('', { isEmpty: true }),
-		phone: useInput('', { isPhone: true }),
+		phone: useInput('', { isPhone: true, minLength: 18 }),
 		patients: useDropdown('*пациенты', ['VIP', 'ОМС', 'Проблемные'], {
 			isEmpty: true,
 		}),
@@ -44,7 +45,11 @@ const Form = () => {
 		documentSeries: useInput(''),
 		documentNumber: useInput(''),
 		issued: useInput(''),
-		dateOfIssue: useInput('', { isEmpty: true, isDate: true }),
+		dateOfIssue: useInput('', {
+			isEmpty: true,
+			isDate: true,
+			minLength: 10,
+		}),
 	};
 
 	const {
@@ -70,37 +75,24 @@ const Form = () => {
 		dateOfIssue,
 	} = formFields;
 
-	//
-
-	// useMemo(() =>{
-
-	// },[formFields])
-
 	useEffect(() => {
 		if (
-			surname.isEmpty ||
-			name.isEmpty ||
-			birthDate.isEmpty ||
-			gender.isEmpty ||
-			phone.isEmpty ||
-			patients.isEmpty ||
-			doctors.isEmpty ||
-			city.isEmpty ||
-			documentType.isEmpty ||
-			dateOfIssue.isEmpty
+			surname.validInput &&
+			name.validInput &&
+			birthDate.validInput &&
+			gender.validInput &&
+			phone.validInput &&
+			patients.selected &&
+			doctors.selected &&
+			city.validInput &&
+			documentType.selected &&
+			dateOfIssue.validInput
 		) {
-			setFormValid(false);
-		} else {
 			setFormValid(true);
+		} else {
+			setFormValid(false);
 		}
 
-		for (let key in formFields) {
-			if (formFields[key].isEmpty) {
-				setFormValid(false);
-			} else {
-				setFormValid(true);
-			}
-		}
 		// eslint-disable-next-line
 	}, [formFields]);
 
@@ -127,10 +119,9 @@ const Form = () => {
 			<Container>
 				<div className='personal_info'>
 					<Input {...surname.inputControl} placeholder={'*Фамилия'} />
-
-					{/* {surname.isDirty && surname.isEmpty && (
-						<div>{surname.errorMessage}</div>
-					)} */}
+					{!surname.validImput && surname.isDirty && (
+						<ErrorMessage message={surname.errorMessage} />
+					)}
 
 					<Input {...name.inputControl} placeholder={'*Имя'} />
 					{name.isDirty && name.isEmpty && (
@@ -145,9 +136,8 @@ const Form = () => {
 							{...birthDate.inputControl}
 							placeholder={'*Дата рождения'}
 						/>
-						{birthDate.isDirty && birthDate.isEmpty && (
-							<div>{birthDate.errorMessage}</div>
-						)}
+
+
 						<Input {...gender.inputControl} placeholder={'*Пол'} />
 						{gender.isDirty && gender.isEmpty && (
 							<div>{gender.errorMessage}</div>
@@ -158,6 +148,9 @@ const Form = () => {
 						type='tel'
 						placeholder={'*Номер телефона'}
 					/>
+					{!phone.validImput ? (
+						<ErrorMessage message={phone.errorMessage} />
+					) : null}
 
 					<Dropdown fields={patients} />
 					{patients.isDirty && patients.isEmpty && (
@@ -202,6 +195,9 @@ const Form = () => {
 						{...dateOfIssue.inputControl}
 						placeholder='*Дата выдачи'
 					/>
+					{!dateOfIssue.validImput ? (
+						<ErrorMessage message={dateOfIssue.errorMessage} />
+					) : null}
 				</div>
 				<div>{formValid}</div>
 				<Button onClick={getData} disabled={!formValid}>
