@@ -1,10 +1,9 @@
-const ErrorMessage = ({message}) => {
+import './style.scss';
+
+const ErrorMessage = (props) => {
 	return (
 		<>
-
-            <span>{message}</span>
-
-			{/* <span></span> */}
+			<span className='error_message'>{props.message}</span>
 		</>
 	);
 };

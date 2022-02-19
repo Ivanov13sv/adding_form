@@ -9,7 +9,12 @@ const Dropdown = ({ fields }) => {
 		selectHandler,
 		selected,
 		placeholder,
+		errorMessage,
+		emptyDropdown,
+		isDirty
 	} = fields;
+
+	console.log(fields)
 
 	const active = isOpen && 'active';
 
@@ -19,17 +24,18 @@ const Dropdown = ({ fields }) => {
 
 	return (
 		<div className='dropdown' tabIndex='0' onKeyPress={keyHandler}>
-			<div className='dropdown-btn' onClick={selectHandler}>
+			<div className='dropdown__btn' onClick={selectHandler}>
 				{selected ? (
-					<span>{selected}</span>
+					<span className='dropdown__select'>{selected}</span>
 				) : (
 					<input disabled placeholder={placeholder} />
 				)}
 
 				<MdKeyboardArrowDown className={active} />
+				{ isDirty && emptyDropdown && !isOpen && !selected ? <span className='dropdown__error'>{errorMessage}</span> : null}
 			</div>
 			{isOpen && (
-				<div className='dropdown-content'>
+				<div className='dropdown__content'>
 					{options.map((item) => (
 						<div
 							onKeyPress={selectByKey}

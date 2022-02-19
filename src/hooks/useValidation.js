@@ -7,31 +7,33 @@ export const useValidation = (value, validations) => {
 	const [isDate, setDate] = useState(false);
 	const [isPhone, setPhone] = useState(false);
 	const [minLengthError, setMinLengthError] = useState(false);
-
-
+	const [emptyDropdown, setEmptyDropdown] = useState(false);
 
 	useEffect(() => {
 		for (let validation in validations) {
 			switch (validation) {
-
 				case 'isEmpty':
 					if (value.length) {
 						setEmpty(false);
-						setErrorMessage('')
+						setErrorMessage('');
 					} else {
 						setEmpty(true);
 						setErrorMessage('Обязательное поле');
 					}
 					break;
 
+				case 'emptyDropdown':
+					setEmptyDropdown(true);
+					setErrorMessage('Обязательное поле');
+					break;
+
 				case 'minLength':
-					if (value.length < validations[validation]){
+					if (value.length < validations[validation]) {
 						setMinLengthError(true);
-						setErrorMessage(`Поле не может быть меньше ${validations[validation]} символов`)
-					}
-					else{
-						setMinLengthError(false)
-						setErrorMessage(``)
+						setErrorMessage(`Поле заполнено некорректно`);
+					} else {
+						setMinLengthError(false);
+						setErrorMessage(``);
 					}
 					break;
 
@@ -54,10 +56,6 @@ export const useValidation = (value, validations) => {
 		// eslint-disable-next-line
 	}, [value]);
 
-
-
-
-
 	return {
 		isEmpty,
 		errorMessage,
@@ -65,5 +63,6 @@ export const useValidation = (value, validations) => {
 		isDate,
 		isPhone,
 		minLengthError,
+		emptyDropdown,
 	};
 };

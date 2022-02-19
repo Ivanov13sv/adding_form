@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useValidation } from './useValidation';
 
-export const useInput = (initialValue, validations) => {
+export const useInput = (initialValue, validations, placeholder) => {
 	const [value, setValue] = useState(initialValue);
 	const [isDirty, setDirty] = useState(false);
 	const [validInput, setValidInput] = useState(false);
 	const valid = useValidation(value, validations);
 
 	const { minLengthError, isEmpty } = valid;
-
-
 
 	const removeLetters = (value) => {
 		return value.replace(/\D/gi, '');
@@ -28,34 +26,22 @@ export const useInput = (initialValue, validations) => {
 
 	const phoneMask = (number) => {
 		let cleanNumbers = removeLetters(number);
-
-		let result = '';
-
-		if (/^[7-9]/.test(cleanNumbers)) {
-			// rus phone number
-
-			let firstSymbol = cleanNumbers[0] === '8' ? '8' : '+7';
-
-			result = firstSymbol + ' ';
-			if (cleanNumbers[0] === '9') result = `+7 (9`;
-			if (cleanNumbers.length > 1) {
-				result += '(' + cleanNumbers.slice(1, 4);
-			}
-			if (cleanNumbers.length >= 5) {
-				result += ') ' + cleanNumbers.slice(4, 7);
-			}
-			if (cleanNumbers.length >= 8) {
-				result += '-' + cleanNumbers.slice(7, 9);
-			}
-			if (cleanNumbers.length >= 10) {
-				result += '-' + cleanNumbers.slice(9, 11);
-			}
-		} else {
-			//not rus number
-			result = `+${cleanNumbers.slice(0, 16)}`;
+		let result = '+7 ';
+		if (cleanNumbers.length > 1) {
+			result += `(${cleanNumbers.slice(1, 4)}`;
+		}
+		if (cleanNumbers.length >= 5) {
+			result += `) ${cleanNumbers.slice(4, 7)}`;
+		}
+		if (cleanNumbers.length >= 8) {
+			result += '-' + cleanNumbers.slice(7, 9);
+		}
+		if (cleanNumbers.length >= 10) {
+			result += '-' + cleanNumbers.slice(9, 11);
 		}
 		return result;
 	};
+
 
 	const onChange = (e) => {
 		if (valid.isNumber) {
@@ -91,7 +77,7 @@ export const useInput = (initialValue, validations) => {
 	}, [minLengthError, isEmpty]);
 
 	return {
-		inputControl: { value, onChange, onBlur },
+		inputControl: { value, onChange, onBlur, placeholder },
 		isDirty,
 		validInput,
 		...valid,
