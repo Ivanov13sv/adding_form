@@ -1,16 +1,16 @@
+@import '../../../vars.scss';
 .check {
-	font-size: 1rem;
-	letter-spacing: 0.02em;
-	color: rgba(255, 255, 255, 0.8);
-	line-height: 120%;
+	@include fontsStyles;
 	width: 100%;
-	display: inline-flex;
-	align-items: center;
+	display: inline;
+	position: relative;
+	left: -22%;
 	border-radius: 10px;
 	padding: 0 0 0 1.5rem;
 
 	&__btn {
 		cursor: pointer;
+		display: inline-block;
 		&:hover .check__box {
 			background-image: url('../../../img/checkbox/hover.svg');
 		}

@@ -1,18 +1,25 @@
 import React from 'react';
 import './style.scss';
 
-const Input = (props) => {
+export const Input = (props) => {
 
-	const test = props.item.isDirty && !props.item.validInput ? <span className='error_message'>{props.item.errorMessage}</span> : null;
+		
+	const error =
+		(!props.item.validInput && window.screen.width > 888) ? (
+			<div className={'inputBlock__errorMessage'}>
+				{props.item.errorMessage}
+			</div>
+		) : null;
 
-	const classes = props.className ? `input ${props.className}` : 'input';
+	const errorClasses = 
+	(!props.item.validInput && window.screen.width < 888) ? 'inputBlock__errorBorder' : null;
+		
+
 	return (
-		<div className='input_block'>
-			<input {...props} className={classes} />
-			{test}
+		<div className='inputBlock'>
+			
+			<input {...props} className={`inputBlock__item ${errorClasses}`} />
+			{error}
 		</div>
 	);
-	
 };
-
-export default Input;

@@ -1,38 +1,29 @@
+@import '../../vars.scss';
 .form {
-	.errorBlock{
-		position: absolute;
-		right: 1px;
-		
-	}
-	.personal_info {
-		& > :not(:last-child) {
-			margin: 0 0 0.7rem 0;
-		}
-		& > :last-child {
-			margin: 0 0 1.6rem 0;
-		}
-		& > :nth-child(5) {
-			margin-bottom: 1.6rem;
-		}
-	}
-	.inputs_row {
-		display: flex;
+	max-width: 339px;
+	margin: 0 auto;
 
-		& > *:not(:last-child) {
-			margin: 0 0.5rem 0 0;
-			flex: 0 0 67%;
-		}
-	}
-	.block {
+	&__body {
 		display: flex;
 		flex-direction: column;
+		> * {
+			margin-bottom: 0.7rem;
+		}
 
-		&__documents {
+
+		&--personalInfo {
+
+			& > :last-child {
+				margin: 0 0 1.5rem 0;
+
+			}
+			> *:nth-child(5) {
+				margin-bottom: 1.6rem;
+			}
+		}
+
+		&--documents {
 			.inputs_row {
-				> * {
-					// margin-top: -0.7rem;
-				}
-
 				& > *:not(:last-child) {
 					flex: 0 0 50%;
 				}
@@ -42,13 +33,22 @@
 			}
 		}
 
-		> *:not(:last-child):not(:first-child) {
-			margin-bottom: 0.7rem;
-		}
-		&__title {
+		&--title {
 			margin-top: 2rem;
 			text-align: start;
 			margin-bottom: 1.3rem;
+			@media ($ScreenSM) {
+				margin-top: 1rem;
+			}
+		}
+
+	}
+	.flex-row {
+		display: flex;
+
+		& > *:not(:last-child) {
+			margin: 0 0.5rem 0 0;
+			flex: 0 0 67%;
 		}
 	}
 }

@@ -1,7 +1,7 @@
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import './style.scss';
 
-const Dropdown = ({ fields }) => {
+export const Dropdown = ({ fields }) => {
 	const {
 		isOpen,
 		keyHandler,
@@ -11,10 +11,10 @@ const Dropdown = ({ fields }) => {
 		placeholder,
 		errorMessage,
 		emptyDropdown,
+		validInput,
 		isDirty
 	} = fields;
 
-	console.log(fields)
 
 	const active = isOpen && 'active';
 
@@ -22,18 +22,21 @@ const Dropdown = ({ fields }) => {
 		selectHandler(e);
 	};
 
+	const errorClasses = 
+	(isDirty && !selected && !isOpen &&  window.screen.width  < 888) ? 'dropdown__btn-errorBorder' : null;
+
 	return (
 		<div className='dropdown' tabIndex='0' onKeyPress={keyHandler}>
-			<div className='dropdown__btn' onClick={selectHandler}>
+			<div className={`dropdown__btn ${errorClasses}`} onClick={selectHandler}>
 				{selected ? (
 					<span className='dropdown__select'>{selected}</span>
 				) : (
 					<input disabled placeholder={placeholder} />
 				)}
-
 				<MdKeyboardArrowDown className={active} />
-				{ isDirty && emptyDropdown && !isOpen && !selected ? <span className='dropdown__error'>{errorMessage}</span> : null}
+				
 			</div>
+			{ isDirty && emptyDropdown && !isOpen && !selected ? <span className='dropdown__error'>{errorMessage}</span> : null}
 			{isOpen && (
 				<div className='dropdown__content'>
 					{options.map((item) => (
@@ -53,4 +56,3 @@ const Dropdown = ({ fields }) => {
 	);
 };
 
-export default Dropdown;

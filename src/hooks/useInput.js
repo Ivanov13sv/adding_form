@@ -26,9 +26,12 @@ export const useInput = (initialValue, validations, placeholder) => {
 
 	const phoneMask = (number) => {
 		let cleanNumbers = removeLetters(number);
-		let result = '+7 ';
+		let result = '';
+		if (cleanNumbers.length){
+			result = '+7'
+		}
 		if (cleanNumbers.length > 1) {
-			result += `(${cleanNumbers.slice(1, 4)}`;
+			result += ` (${cleanNumbers.slice(1, 4)}`;
 		}
 		if (cleanNumbers.length >= 5) {
 			result += `) ${cleanNumbers.slice(4, 7)}`;
@@ -66,20 +69,31 @@ export const useInput = (initialValue, validations, placeholder) => {
 
 	const onBlur = (e) => {
 		setDirty(true);
+		e.target.addEventListener('touchend', setDirty(true));
+		
 	};
 
+	const onTouchStart = e =>{
+		setDirty(true)
+	}
+
 	useEffect(() => {
-		if (minLengthError || isEmpty) {
+		if ((minLengthError || isEmpty) && isDirty) {
 			setValidInput(false);
 		} else {
 			setValidInput(true);
 		}
-	}, [minLengthError, isEmpty]);
+	}, [minLengthError, isEmpty, isDirty]);
+
+	// useEffect(() =>{
+	// 	if ()
+	// },[])
 
 	return {
 		inputControl: { value, onChange, onBlur, placeholder },
 		isDirty,
 		validInput,
+		onTouchStart,
 		...valid,
 	};
 };

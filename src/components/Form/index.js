@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import Input from '../UI/Input';
-import Container from '../Container/Container';
-import Dropdown from '../UI/Dropdown';
+import { useEffect, useState } from 'react';
+import { Input } from '../UI/Input';
+import { Dropdown } from '../UI/Dropdown';
 import { useInput } from '../../hooks/useInput';
 import { Checkbox } from '../UI/Checkbox';
 import { Button } from '../UI/Button';
-import './style.scss';
 import { useDropdown } from '../../hooks/useDropdown';
-import { ErrorMessage } from '../UI/ErrorMessage';
+
+
+
+import './style.scss';
 
 const Form = () => {
 	const [formValid, setFormValid] = useState(false);
@@ -25,7 +26,7 @@ const Form = () => {
 		phone: useInput(
 			'',
 			{ isPhone: true, minLength: 18 },
-			'*Номер телефона'
+			'*Телефон'
 		),
 		patients: useDropdown(
 			'*Группа клиентов',
@@ -134,64 +135,61 @@ const Form = () => {
 		// for (let key in formFields) {
 		// 	formFields[key].isDirty = true;
 		// }
-		alert('jopa')
+		// alert('jopa');
 	};
-
-	const fn = formValid ? getData : getErrors;
 
 	return (
 		<form className='form'>
-			<Container>
-				<div className='personal_info'>
-					<Input item={surname} {...surname.inputControl} />
-					<Input item={name} {...name.inputControl} />
-					<Input item={patronymic} {...patronymic.inputControl} />
-					<div className='inputs_row'>
-						<Input item={birthDate} {...birthDate.inputControl} />
-						<Input item={gender} {...gender.inputControl} />
-					</div>
-					<Input item={phone} {...phone.inputControl} type='tel' />
-					<Dropdown fields={patients} />
-					<Dropdown fields={doctors} />
+			<div className='form__body form__body--personalInfo'>
+				<Input item={surname} {...surname.inputControl}/>
+				<Input item={name} {...name.inputControl} />
+				<Input item={patronymic} {...patronymic.inputControl} />
+				<div className='flex-row'>
+					<Input item={birthDate} {...birthDate.inputControl} type='tel' />
+					<Input item={gender} {...gender.inputControl} />
 				</div>
-				<Checkbox
-					isChecked={sendMessage[0]}
-					setIsChecked={sendMessage[1]}
-					placeholder='Не отправлять СМС'
-				/>
-				<div className='block block__adress'>
-					<p className='block__title'>Адрес:</p>
-					<Input item={country} {...country.inputControl} />
-					<Input item={region} {...region.inputControl} />
-					<Input item={city} {...city.inputControl} />
-					<div className='inputs_row'>
-						<Input item={street} {...street.inputControl} />
-						<Input item={house} {...house.inputControl} />
-					</div>
-					<Input item={index} {...index.inputControl} />
+				<Input item={phone} {...phone.inputControl} type='tel' />
+				<Dropdown fields={patients} />
+				<Dropdown fields={doctors} />
+			</div>
+			<Checkbox
+				isChecked={sendMessage[0]}
+				setIsChecked={sendMessage[1]}
+				placeholder='Не отправлять СМС'
+			/>
+			<div className='form__body '>
+				<p className='form__body--title'>Адрес:</p>
+				<Input item={country} {...country.inputControl} />
+				<Input item={region} {...region.inputControl} />
+				<Input item={city} {...city.inputControl} />
+				<div className='flex-row'>
+					<Input item={street} {...street.inputControl} />
+					<Input item={house} {...house.inputControl} />
 				</div>
-				<div className='block block__documents'>
-					<p className='block__title'>Данные:</p>
-					<Dropdown fields={documentType} />
-					<div className='inputs_row'>
-						<Input
-							item={documentSeries}
-							{...documentSeries.inputControl}
-							type='tel'
-						/>
-						<Input
-							item={documentNumber}
-							{...documentNumber.inputControl}
-							type='tel'
-						/>
-					</div>
-					<Input item={issued} {...issued.inputControl} />
-					<Input item={dateOfIssue} {...dateOfIssue.inputControl} />
+				<Input item={index} {...index.inputControl} />
+			</div>
+			<div className='form__body form__body--documents'>
+				<p className='form__body--title'>Данные:</p>
+				<Dropdown fields={documentType} />
+				<div className='flex-row'>
+					<Input
+						item={documentSeries}
+						{...documentSeries.inputControl}
+						type='tel'
+					/>
+					<Input
+						item={documentNumber}
+						{...documentNumber.inputControl}
+						type='tel'
+					/>
 				</div>
-				<Button onClick={!formValid ? getErrors : getData} >
-					Создать клиента
-				</Button>
-			</Container>
+				<Input item={issued} {...issued.inputControl} />
+				<Input item={dateOfIssue} {...dateOfIssue.inputControl} type='tel' />
+			</div>
+			<Button onClick={!formValid ? getErrors : getData}>
+				Создать клиента
+			</Button>
+
 		</form>
 	);
 };

@@ -1,18 +1,17 @@
-@import '../../index.scss';
+@import '../../vars.scss';
 
 .form__title {
 	font-size: $fsBg;
-	line-height: 123%;
-	/* identical to box height */
+	line-height: 120%;
 	letter-spacing: 0.01em;
 	font-weight: 300;
+	@media ($ScreenSM) {
+		font-size: $fsMd;	
+	}
+	
 }
 
 .form__subtitle {
-	font-weight: 500;
-	font-size: $fsSm;
-	line-height: 120%;
-	letter-spacing: 0.01em;
-	color: rgba(255, 255, 255, 0.8);
+	@include fontsStyles;
 	margin: 0 0 1.5rem 0;
 }
