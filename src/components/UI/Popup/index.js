@@ -14,6 +14,7 @@ export const Popup = ({ active, setActive, children }) => {
 		setActive(false);
 	};
 
+
 	return (
 		<div className={popupClasses} onClick={closePopup}>
 			<div

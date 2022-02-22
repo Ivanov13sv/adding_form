@@ -10,7 +10,7 @@ export const Dropdown = ({ fields }) => {
 		selected,
 		placeholder,
 		errorMessage,
-		emptyDropdown,
+		isEmptyDropdown,
 		isDirty,
 	} = fields;
 
@@ -26,7 +26,7 @@ export const Dropdown = ({ fields }) => {
 		isDirty && !selected && !isOpen && 'dropdown__btn-errorBorder';
 
 	const showErrorTooltip =
-		isDirty && emptyDropdown && !isOpen && !selected ? (
+		isDirty && isEmptyDropdown && !isOpen && !selected ? (
 			<span className='dropdown__error'>{errorMessage}</span>
 		) : null;
 

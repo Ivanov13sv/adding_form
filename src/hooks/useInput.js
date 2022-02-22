@@ -7,7 +7,7 @@ export const useInput = (initialValue, validations, placeholder) => {
 	const [validInput, setValidInput] = useState(false);
 	const valid = useValidation(value, validations);
 
-	const { minLengthError, isEmpty } = valid;
+	const { minLengthError, isEmptyInput } = valid;
 
 	const removeLetters = (value) => {
 		return value.replace(/\D/gi, '');
@@ -69,31 +69,23 @@ export const useInput = (initialValue, validations, placeholder) => {
 
 	const onBlur = (e) => {
 		setDirty(true);
-		// e.target.addEventListener('touchend', setDirty(true));
-		
 	};
 
-	const onTouchStart = e =>{
-		setDirty(true)
-	}
 
 	useEffect(() => {
-		if ((minLengthError || isEmpty) && isDirty) {
+		if ((minLengthError || isEmptyInput) && isDirty) {
 			setValidInput(false);
 		} else {
 			setValidInput(true);
 		}
-	}, [minLengthError, isEmpty, isDirty]);
+	}, [minLengthError, isEmptyInput, isDirty]);
 
-	// useEffect(() =>{
-	// 	if ()
-	// },[])
 
 	return {
 		inputControl: { value, onChange, onBlur, placeholder },
 		isDirty,
 		validInput,
-		onTouchStart,
+		setDirty,
 		...valid,
 	};
 };

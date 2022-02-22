@@ -12,13 +12,7 @@
 
 body {
 	background: teal;
-	// background-position: center;
-	color: azure;
-	// height: 100vh;
-	// overflow: hidden;
-	&::-webkit-scrollbar{
+	&::-webkit-scrollbar {
 		display: none;
 	}
 }
-
-

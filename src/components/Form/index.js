@@ -14,30 +14,34 @@ const Form = () => {
 	const [popupActive, setPopupActive] = useState(false);
 
 	const formFields = {
-		surname: useInput('', { isEmpty: true }, '*Фамилия'),
-		name: useInput('', { isEmpty: true }, '*Имя'),
+		surname: useInput('', { isEmptyInput: true }, '*Фамилия'),
+		name: useInput('', { isEmptyInput: true }, '*Имя'),
 		patronymic: useInput('', {}, 'Отчество'),
 		birthDate: useInput(
 			'',
-			{ isEmpty: true, isDate: true, minLength: 10 },
+			{ isEmptyInput: true, isDate: true, minLength: 10 },
 			'*Дата рождения'
 		),
 		gender: useInput('', {}, 'Пол'),
-		phone: useInput('', { isPhone: true, minLength: 18 }, '*Телефон'),
+		phone: useInput(
+			'',
+			{ isPhone: true, isEmptyInput: true, minLength: 18 },
+			'*Телефон'
+		),
 		patients: useDropdown(
 			'*Группа клиентов',
 			['VIP', 'ОМС', 'Проблемные'],
-			{ emptyDropdown: true }
+			{ isEmptyDropdown: true }
 		),
 		doctors: useDropdown(
 			'*Лечащий врач',
 			['Иванов А. А.', 'Захаров С.В.', 'Чернышева Ю.Н.'],
-			{ emptyDropdown: true }
+			{ isEmptyDropdown: true }
 		),
 		sendMessage: useState(false),
 		country: useInput('', {}, 'Страна'),
 		region: useInput('', {}, 'Область'),
-		city: useInput('', { isEmpty: true }, '*Город'),
+		city: useInput('', { isEmptyInput: true }, '*Город'),
 		street: useInput('', {}, 'Улица'),
 		house: useInput('', {}, 'Дом'),
 		index: useInput('', { isNumber: true }, 'Индекс'),
@@ -48,16 +52,15 @@ const Form = () => {
 				'Свидетельство о рождении',
 				'Водительское удостоверение',
 			],
-			{ emptyDropdown: true }
+			{ isEmptyDropdown: true }
 		),
-
 		documentSeries: useInput('', {}, 'Серия'),
 		documentNumber: useInput('', {}, 'Номер'),
 		issued: useInput('', {}, 'Кем выдан'),
 		dateOfIssue: useInput(
 			'',
 			{
-				isEmpty: true,
+				isEmptyInput: true,
 				isDate: true,
 				minLength: 10,
 			},
@@ -104,22 +107,27 @@ const Form = () => {
 		console.log(result);
 	};
 
+	const showRequiredFields = () => {
+		for (let key in formFields) {
+			if (
+				typeof formFields[key] === 'object' &&
+				formFields[key].hasOwnProperty('isDirty') &&
+				(formFields[key].isEmptyInput === true ||
+					formFields[key].isEmptyDropdown)
+			) {
+				formFields[key].setDirty(true);
+			}
+		}
+	};
+
 	const addUser = (e) => {
 		e.preventDefault();
 		if (formValid) {
-			getUserParams(e);
+			getUserParams();
+			setPopupActive(true);
 		}
-		setPopupActive(true);
+		showRequiredFields();
 	};
-
-	const makeFieldsDirty = e =>{
-		e.preventDefault()
-		for (let key in formFields){
-			formFields[key].validInput = false;
-
-		}
-	}
-
 
 	useEffect(() => {
 		if (
@@ -142,11 +150,8 @@ const Form = () => {
 		// eslint-disable-next-line
 	}, [formFields]);
 
-
-
-
 	return (
-		<form className='form'>
+		<form className='form' onSubmit={addUser}>
 			<div className='form__body form__body--personalInfo'>
 				<Input item={surname} {...surname.inputControl} />
 				<Input item={name} {...name.inputControl} />
@@ -202,17 +207,13 @@ const Form = () => {
 				/>
 			</div>
 			<Popup active={popupActive} setActive={setPopupActive}>
-				{formValid ? (
-					<p>Клиент успешно добавлен!</p>
-				) : (
-					<p>Необходимо заполнить обязательные поля</p>
-				)}
+				<p>Клиент успешно добавлен!</p>
 			</Popup>
-			<Button onClick={makeFieldsDirty}>Создать клиента</Button>
+			<Button>
+				Создать клиента
+			</Button>
 		</form>
 	);
 };
 
 export default Form;
-
-// еуые

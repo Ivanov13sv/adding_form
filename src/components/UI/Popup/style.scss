@@ -18,37 +18,37 @@
 
 	&__content {
 		@include flexCentering;
-		padding: 15px;
 		border-radius: 10px;
 		background: teal;
 		transform: scale(0.5);
 		transition: transform 0.4s ease;
 		width: 250px;
-		padding: 50px 0;
+		padding: 60px 0;
 		position: relative;
 
 		&-closeBtn {
 			@include flexCentering;
 			position: absolute;
-			width: 44px;
-			height: 44px;
+			width: 30px;
+			height: 30px;
 			right: 13px;
 			top: 13px;
 			background-color: rgb(2, 99, 99);
 			border-radius: 10px;
 			cursor: pointer;
+			@media ($ScreenTablet) {
+				width: 44px;
+				height: 44px;
+			}
             svg{
                 transform: scale(.8);
                 transition: transform .3s ease;
+				color: $fcMain;
             }
             &:hover > svg{
                 transform: scale(1);
             }
 
-
-			&:hover > img {
-				
-			}
 		}
 		&-active {
 			transform: scale(1);

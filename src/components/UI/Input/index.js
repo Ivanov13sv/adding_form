@@ -3,14 +3,6 @@ import './style.scss';
 
 export const Input = (props) => {
 
-		
-	// const error =
-	// 	((!props.item.validInput && window.screen.width) > 888) ? (
-	// 		<div className={'inputBlock__errorMessage'}>
-	// 			{props.item.errorMessage}
-	// 		</div>
-	// 	) : null;
-
 	const errorClasses = 
 	(!props.item.validInput ) ? 'inputBlock__errorBorder' : null;
 		

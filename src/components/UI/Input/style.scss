@@ -2,7 +2,6 @@
 
 .inputBlock {
 	position: relative;
-	// flex-direction: row-reverse;
 	&__errorMessage {
 		@include errorMessage;
 
@@ -18,10 +17,6 @@
 		position: relative;
 		border: 2px solid $elemBg;
 
-		// &:invalid{
-		// 	border: 1px solid red;
-		// }
-
 		&::placeholder {
 			@include fontsStyles;
 		}
@@ -31,7 +26,6 @@
 		}
 		&:focus {
 			background: $focusColor;
-			// border: 2px solid rgb(2, 92, 92);
 		}
 	}
 	&__errorBorder {

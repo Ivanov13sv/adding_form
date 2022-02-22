@@ -8,11 +8,6 @@ export const useDropdown = (placeholder, options, validations) => {
 
 	const valid = useValidation(selected, validations);
 
-	const onBlur = () => {
-		setDirty(true);
-	};
-
-
 	const setOpenAndDirty = () => {
 		setOpen(!isOpen);
 		setDirty(true);
@@ -37,6 +32,7 @@ export const useDropdown = (placeholder, options, validations) => {
 		keyHandler,
 		placeholder,
 		isDirty,
+		setDirty,
 		...valid,
 	};
 };

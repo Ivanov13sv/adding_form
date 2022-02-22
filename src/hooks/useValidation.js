@@ -2,35 +2,35 @@ import { useEffect, useState } from 'react';
 
 export const useValidation = (value, validations) => {
 	const [errorMessage, setErrorMessage] = useState('');
-	const [isEmpty, setEmpty] = useState(false);
+	const [isEmptyInput, setEmpty] = useState(false);
+	const [isEmptyDropdown, setEmptyDropdown] = useState(false);
 	const [isNumber, setNumber] = useState(false);
 	const [isDate, setDate] = useState(false);
 	const [isPhone, setPhone] = useState(false);
 	const [minLengthError, setMinLengthError] = useState(false);
-	const [emptyDropdown, setEmptyDropdown] = useState(false);
 
 	useEffect(() => {
 		for (let validation in validations) {
 			switch (validation) {
-				case 'isEmpty':
-					if (value.length) {
-						setEmpty(false);
-						setErrorMessage('');
-					} else {
+				case 'isEmptyInput':
+					if (value.length <= 0) {
 						setEmpty(true);
 						setErrorMessage('Обязательное поле');
+					} else {
+						setEmpty(false);
+						setErrorMessage('');
 					}
 					break;
 
-				case 'emptyDropdown':
-					setEmptyDropdown(true);
-					setErrorMessage('Обязательное поле');
+				case 'isEmptyDropdown':
+					setEmptyDropdown(true)
+					setErrorMessage('Выберите один из пунктов')
 					break;
 
 				case 'minLength':
 					if (value.length < validations[validation]) {
 						setMinLengthError(true);
-						setErrorMessage(`Заполните поле полностью`);
+						setErrorMessage(`Заполните поле корректно`);
 					} else {
 						setMinLengthError(false);
 						setErrorMessage(``);
@@ -57,12 +57,14 @@ export const useValidation = (value, validations) => {
 	}, [value]);
 
 	return {
-		isEmpty,
+		isEmptyInput,
 		errorMessage,
 		isNumber,
 		isDate,
 		isPhone,
+		isEmptyDropdown,
 		minLengthError,
-		emptyDropdown,
 	};
 };
+
+

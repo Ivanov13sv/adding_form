@@ -10,15 +10,8 @@
 	outline: none;
 	transition: $colorTransition;
 	border: 2px solid $elemBg;
-
-	&:disabled {
-		background: hsla(0, 45%, 45%, 0.432);
-		&:hover {
-			background: hsla(0, 45%, 45%, 0.432);
-		}
-
-
-	}
+	cursor: pointer;
+	
 	&:hover {
 		background: $hoverColor;
 	}
@@ -31,5 +24,5 @@
 		}
 	}
 
-	cursor: pointer;
+	
 }
