@@ -11,9 +11,12 @@
 	&__btn {
 		cursor: pointer;
 		display: inline-block;
-		&:hover .check__box {
-			background-image: url('../../../img/checkbox/hover.svg');
+		@media ($ScreenTablet) {
+			&:hover .check__box {
+				background-image: url('../../../img/checkbox/hover.svg');
+			}
 		}
+
 	}
 	&__input {
 		-webkit-appearance: none;

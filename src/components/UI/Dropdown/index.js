@@ -11,48 +11,55 @@ export const Dropdown = ({ fields }) => {
 		placeholder,
 		errorMessage,
 		emptyDropdown,
-		validInput,
-		isDirty
+		isDirty,
 	} = fields;
 
-
-	const active = isOpen && 'active';
+	const openDropdown = isOpen
+		? 'dropdown__content dropdown__content-active'
+		: 'dropdown__content';
 
 	const selectByKey = (e) => {
 		selectHandler(e);
 	};
 
-	const errorClasses = 
-	(isDirty && !selected && !isOpen &&  window.screen.width  < 888) ? 'dropdown__btn-errorBorder' : null;
+	const errorBorderClass =
+		isDirty && !selected && !isOpen && 'dropdown__btn-errorBorder';
+
+	const showErrorTooltip =
+		isDirty && emptyDropdown && !isOpen && !selected ? (
+			<span className='dropdown__error'>{errorMessage}</span>
+		) : null;
+
+	const showPlaceholder = selected ? (
+		<span className='dropdown__select'>{selected}</span>
+	) : (
+		<input disabled placeholder={placeholder} />
+	);
 
 	return (
 		<div className='dropdown' tabIndex='0' onKeyPress={keyHandler}>
-			<div className={`dropdown__btn ${errorClasses}`} onClick={selectHandler}>
-				{selected ? (
-					<span className='dropdown__select'>{selected}</span>
-				) : (
-					<input disabled placeholder={placeholder} />
-				)}
-				<MdKeyboardArrowDown className={active} />
-				
+			<div
+				className={`dropdown__btn ${errorBorderClass}`}
+				onClick={selectHandler}
+			>
+				{showPlaceholder}
+				<MdKeyboardArrowDown className={isOpen && 'active'} />
 			</div>
-			{ isDirty && emptyDropdown && !isOpen && !selected ? <span className='dropdown__error'>{errorMessage}</span> : null}
-			{isOpen && (
-				<div className='dropdown__content'>
-					{options.map((item) => (
-						<div
-							onKeyPress={selectByKey}
-							tabIndex='0'
-							key={item}
-							onClick={selectByKey}
-							className='dropdown-item'
-						>
-							{item}
-						</div>
-					))}
-				</div>
-			)}
+			{showErrorTooltip}
+
+			<div className={openDropdown}>
+				{options.map((item) => (
+					<div
+						onKeyPress={selectByKey}
+						tabIndex='0'
+						key={item}
+						onClick={selectByKey}
+						className='dropdown-item'
+					>
+						{item}
+					</div>
+				))}
+			</div>
 		</div>
 	);
 };
-

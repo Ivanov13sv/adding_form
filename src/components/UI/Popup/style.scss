@@ -1,0 +1,70 @@
+@import '../../../vars.scss';
+.popup {
+	@include flexCentering;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba($color: #000000, $alpha: 0.6);
+	position: fixed;
+	left: 0;
+	top: 0;
+	opacity: 0;
+	pointer-events: none;
+	transition: all 0.4s ease;
+	z-index: 10;
+	&-active {
+		opacity: 1;
+		pointer-events: all;
+	}
+
+	&__content {
+		@include flexCentering;
+		padding: 15px;
+		border-radius: 10px;
+		background: teal;
+		transform: scale(0.5);
+		transition: transform 0.4s ease;
+		width: 250px;
+		padding: 50px 0;
+		position: relative;
+
+		&-closeBtn {
+			@include flexCentering;
+			position: absolute;
+			width: 44px;
+			height: 44px;
+			right: 13px;
+			top: 13px;
+			background-color: rgb(2, 99, 99);
+			border-radius: 10px;
+			cursor: pointer;
+            svg{
+                transform: scale(.8);
+                transition: transform .3s ease;
+            }
+            &:hover > svg{
+                transform: scale(1);
+            }
+
+
+			&:hover > img {
+				
+			}
+		}
+		&-active {
+			transform: scale(1);
+		}
+
+		p {
+			color: $fcMain;
+		}
+
+		@media ($ScreenTablet) {
+			width: 400px;
+		}
+		@media ($ScreenDesktop) {
+			width: 708px;
+			height: 364px;
+			font-size: $fsBg;
+		}
+	}
+}

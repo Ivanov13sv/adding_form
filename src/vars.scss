@@ -3,7 +3,7 @@ $ff: Montserrat;
 
 $fsSm: 1rem;
 $fsMd: 1.34rem;
-$fsBg: 2rem;
+$fsBg: 1.8rem;
 $fsError: 0.85rem;
 
 // Colors
@@ -21,9 +21,12 @@ $borderRadius: 10px;
 $colorTransition: background-color 0.2s ease;
 
 //Media
-$ScreenSM: 'max-width: 576px';
-$ScreenMD: 'max-width: 800px';
-$ScreenBG: 'min-width: 769px';
+$ScreenPhone: 'min-width: 320px';
+$ScreenTablet: 'min-width: 600px';
+$ScreenLaptop: 'min-width: 801px';
+$ScreenDesktop: 'min-width: 1025px';
+
+
 
 // Mixins
 
@@ -41,17 +44,16 @@ $ScreenBG: 'min-width: 769px';
 	outline: none;
 }
 
-@keyframes opacity {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
+@mixin flexCentering {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
+
 
 @mixin errorMessage {
 	@include borderStyles;
+	@include flexCentering;
 	transition: opacity 1s ease;
 	color: $errorColor;
 	left: -220px;
@@ -59,19 +61,16 @@ $ScreenBG: 'min-width: 769px';
 	font-size: $fsError;
 	pointer-events: none;
 	top: -20px;
-	animation: opacity forwards;
 	position: absolute;
 	background: rgba(2, 97, 97, 0.692);
-	display: flex;
-	align-items: center;
-	justify-content: center;
 	width: 200px;
 	height: 39px;
 	line-height: 120%;
 	border-radius: 7px;
 	padding: 0 10px;
-	@media ($ScreenMD) {
-		display: none;
+	display: none;
+	@media ($ScreenLaptop) {
+		display: flex;
 	}
 
 	&:after {

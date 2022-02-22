@@ -2,17 +2,12 @@
 .dropdown {
 	position: relative;
 	cursor: pointer;
-	
 
-	&__select{
-
+	&__select {
 		@include fontsStyles;
-
 	}
-	&__error{
-
+	&__error {
 		@include errorMessage;
-
 	}
 
 	&__btn {
@@ -24,10 +19,14 @@
 		align-items: center;
 		background: $elemBg;
 		transition: $colorTransition;
-		border: 2px solid teal;
+		border: 2px solid $elemBg;
+		z-index: 2;
 
 		&-errorBorder {
 			border: 2px solid $errorColor;
+			@media ($ScreenLaptop) {
+				border: 2px solid $elemBg;
+			}
 		}
 		> input {
 			@include fontsStyles;
@@ -36,9 +35,8 @@
 			cursor: pointer;
 
 			width: 100%;
-			&::placeholder{
+			&::placeholder {
 				color: $fcMain;
-				
 			}
 		}
 		> svg {
@@ -47,18 +45,40 @@
 			transform: rotate(0deg);
 			transition: transform 0.2s ease;
 			align-self: flex-start;
+
+		
 		}
 		.active {
 			transform: rotate(-180deg);
+
 		}
+
 		&:hover {
 			background: $hoverColor;
 		}
 	}
+
 	&__content {
+		@keyframes open {
+			0% {
+				transform: translateY(-40px);
+			}
+			100% {
+				transform: translateY(0);
+			}
+		}
 		background: $elemBg;
 		border-radius: $borderRadius;
+		border: 2px solid teal;
+		border-top: none;
+		border-radius: 10px;
 		margin-top: 0.7rem;
+		transition: all 0.5s;
+		animation: open 0.3s;
+		display: none;
+		&-active {
+			display: block;
+		}
 	}
 	&-item {
 		@include fontsStyles;

@@ -69,7 +69,7 @@ export const useInput = (initialValue, validations, placeholder) => {
 
 	const onBlur = (e) => {
 		setDirty(true);
-		e.target.addEventListener('touchend', setDirty(true));
+		// e.target.addEventListener('touchend', setDirty(true));
 		
 	};
 

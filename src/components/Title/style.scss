@@ -1,12 +1,12 @@
 @import '../../vars.scss';
 
 .form__title {
-	font-size: $fsBg;
+	font-size: $fsMd;
 	line-height: 120%;
 	letter-spacing: 0.01em;
 	font-weight: 300;
-	@media ($ScreenSM) {
-		font-size: $fsMd;	
+	@media ($ScreenLaptop) {
+		font-size: $fsBg;	
 	}
 	
 }

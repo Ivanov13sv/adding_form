@@ -5,13 +5,13 @@ import { useInput } from '../../hooks/useInput';
 import { Checkbox } from '../UI/Checkbox';
 import { Button } from '../UI/Button';
 import { useDropdown } from '../../hooks/useDropdown';
-
-
+import { Popup } from '../UI/Popup';
 
 import './style.scss';
 
 const Form = () => {
 	const [formValid, setFormValid] = useState(false);
+	const [popupActive, setPopupActive] = useState(false);
 
 	const formFields = {
 		surname: useInput('', { isEmpty: true }, '*Фамилия'),
@@ -23,11 +23,7 @@ const Form = () => {
 			'*Дата рождения'
 		),
 		gender: useInput('', {}, 'Пол'),
-		phone: useInput(
-			'',
-			{ isPhone: true, minLength: 18 },
-			'*Телефон'
-		),
+		phone: useInput('', { isPhone: true, minLength: 18 }, '*Телефон'),
 		patients: useDropdown(
 			'*Группа клиентов',
 			['VIP', 'ОМС', 'Проблемные'],
@@ -92,6 +88,39 @@ const Form = () => {
 		dateOfIssue,
 	} = formFields;
 
+	const getUserParams = () => {
+		let result = {};
+		for (let key in formFields) {
+			if (formFields[key].selected)
+				result[key] = formFields[key].selected;
+
+			if (key === 'sendMessage') {
+				result[key] = formFields[key][0];
+			}
+
+			if (formFields[key].inputControl)
+				result[key] = formFields[key].inputControl.value;
+		}
+		console.log(result);
+	};
+
+	const addUser = (e) => {
+		e.preventDefault();
+		if (formValid) {
+			getUserParams(e);
+		}
+		setPopupActive(true);
+	};
+
+	const makeFieldsDirty = e =>{
+		e.preventDefault()
+		for (let key in formFields){
+			formFields[key].validInput = false;
+
+		}
+	}
+
+
 	useEffect(() => {
 		if (
 			surname.validInput &&
@@ -113,39 +142,21 @@ const Form = () => {
 		// eslint-disable-next-line
 	}, [formFields]);
 
-	const getData = (e) => {
-		e.preventDefault();
-		let result = {};
 
-		for (let key in formFields) {
-			if (formFields[key].selected)
-				result[key] = formFields[key].selected;
 
-			if (key === 'sendMessage') {
-				result[key] = formFields[key][0];
-			}
-
-			if (formFields[key].inputControl)
-				result[key] = formFields[key].inputControl.value;
-		}
-		console.log(result);
-	};
-	const getErrors = (e) => {
-		// e.preventDefault();
-		// for (let key in formFields) {
-		// 	formFields[key].isDirty = true;
-		// }
-		// alert('jopa');
-	};
 
 	return (
 		<form className='form'>
 			<div className='form__body form__body--personalInfo'>
-				<Input item={surname} {...surname.inputControl}/>
+				<Input item={surname} {...surname.inputControl} />
 				<Input item={name} {...name.inputControl} />
 				<Input item={patronymic} {...patronymic.inputControl} />
 				<div className='flex-row'>
-					<Input item={birthDate} {...birthDate.inputControl} type='tel' />
+					<Input
+						item={birthDate}
+						{...birthDate.inputControl}
+						type='tel'
+					/>
 					<Input item={gender} {...gender.inputControl} />
 				</div>
 				<Input item={phone} {...phone.inputControl} type='tel' />
@@ -184,12 +195,20 @@ const Form = () => {
 					/>
 				</div>
 				<Input item={issued} {...issued.inputControl} />
-				<Input item={dateOfIssue} {...dateOfIssue.inputControl} type='tel' />
+				<Input
+					item={dateOfIssue}
+					{...dateOfIssue.inputControl}
+					type='tel'
+				/>
 			</div>
-			<Button onClick={!formValid ? getErrors : getData}>
-				Создать клиента
-			</Button>
-
+			<Popup active={popupActive} setActive={setPopupActive}>
+				{formValid ? (
+					<p>Клиент успешно добавлен!</p>
+				) : (
+					<p>Необходимо заполнить обязательные поля</p>
+				)}
+			</Popup>
+			<Button onClick={makeFieldsDirty}>Создать клиента</Button>
 		</form>
 	);
 };

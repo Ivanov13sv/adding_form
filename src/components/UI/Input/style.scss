@@ -36,5 +36,8 @@
 	}
 	&__errorBorder {
 		border: 2px solid $errorColor;
+		@media ($ScreenLaptop) {
+			border: 2px solid $elemBg;
+		}
 	}
 }

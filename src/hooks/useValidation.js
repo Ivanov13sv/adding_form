@@ -30,7 +30,7 @@ export const useValidation = (value, validations) => {
 				case 'minLength':
 					if (value.length < validations[validation]) {
 						setMinLengthError(true);
-						setErrorMessage(`Поле заполнено некорректно`);
+						setErrorMessage(`Заполните поле полностью`);
 					} else {
 						setMinLengthError(false);
 						setErrorMessage(``);
